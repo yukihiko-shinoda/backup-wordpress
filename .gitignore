@@ -1,0 +1,7 @@
+.coverage
+.idea/**/mypy.xml
+.idea/**/pylint.xml
+.mypy_cache
+__pycache__/
+config.yml
+tests/testresources/config.yml.dist
