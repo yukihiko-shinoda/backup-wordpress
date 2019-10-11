@@ -13,7 +13,6 @@ pytest-cov = "*"
 radon = "*"
 
 [packages]
-dataclasses-json = "==0.3.0"
 # To use treat long path
 pywin32 = "*"
 # To read yaml file as config
@@ -21,9 +20,6 @@ yamldataclassconfig = "*"
 
 [requires]
 python_version = "3.7"
-
-[pipenv]
-allow_prereleases = true
 
 [scripts]
 back_up = "python back_up.py"
