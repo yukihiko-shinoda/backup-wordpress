@@ -18,11 +18,18 @@ class Paths:
         raise NotImplementedError
 
     @staticmethod
+    def create_temporary(path_static: Path, path_uploads: Path) -> "Paths":
+        """Create platform-specific Paths instance."""
+        if platform.system() == "Windows":
+            return PathsForWindows(path_static, path_uploads)
+        return TemporaryPathsForLinux(path_static, path_uploads)
+
+    @staticmethod
     def create(path_static: Path, path_uploads: Path) -> "Paths":
         """Create platform-specific Paths instance."""
         if platform.system() == "Windows":
             return PathsForWindows(path_static, path_uploads)
-        return PathsForLinux(path_static, path_uploads)
+        return ActualPathsForLinux(path_static, path_uploads)
 
 
 class PathsForWindows(Paths):
@@ -34,7 +41,16 @@ class PathsForWindows(Paths):
         assert self.path_uploads.endswith(r"\uploads")
 
 
-class PathsForLinux(Paths):
+class TemporaryPathsForLinux(Paths):
+    """Unix/Linux-specific path assertions."""
+
+    def assert_paths(self) -> None:
+        """Assert paths use Unix path separators."""
+        assert self.path_static.endswith("/static.tmp")
+        assert self.path_uploads.endswith("/uploads.tmp")
+
+
+class ActualPathsForLinux(Paths):
     """Unix/Linux-specific path assertions."""
 
     def assert_paths(self) -> None:
@@ -55,7 +71,7 @@ class DockerComposeWordpressProjectDirectoryForTest(DockerComposeWordpressProjec
 
     def assert_temp_paths(self) -> None:
         """Assert temporary paths format based on platform."""
-        paths = Paths.create(self.temporary_static, self.temporary_uploads)
+        paths = Paths.create_temporary(self.temporary_static, self.temporary_uploads)
         paths.assert_paths()
 
     def make_directories(self) -> None:

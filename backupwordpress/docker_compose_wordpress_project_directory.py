@@ -29,21 +29,71 @@ class DockerComposeWordpressProjectDirectory:
 
     @property
     def temporary_static(self) -> Path:
-        """Get temporary static directory path at drive root.
+        r"""Get temporary static directory path with platform-specific optimization.
+
+        This property returns different paths based on the platform to optimize for platform-specific
+        constraints and requirements:
+
+        On Windows:
+            Uses drive root (e.g., C:\static) to minimize path length and avoid hitting the 260-character
+            MAX_PATH limitation. During restore operations, both source (backup) and destination paths
+            contribute to total path length. By using the shortest possible temporary path at the drive
+            root, we minimize the risk of path length errors during file copy operations.
+
+        On Unix/Linux:
+            Uses parent directory with .tmp suffix (e.g., /path/to/static.tmp) for two reasons:
+            1. Avoids permission issues - cannot create directories at filesystem root (/)
+            2. Enables atomic move operations - staying on the same filesystem allows shutil.move()
+               to use rename(), which is atomic at the filesystem level
+
+        The two-step copy-to-temp-then-move pattern provides:
+        - Atomic directory replacement (no partial state visible)
+        - Safety (original remains intact if copy fails)
+        - Clean replacement (no file merging)
 
         Returns:
-            Path using drive anchor to minimize path length
+            Temporary path for static directory based on platform
         """
-        return Path(f"{self.path.anchor}static")
+        # On Windows, anchor is like 'C:\\', on Unix it's '/'
+        if self.path.anchor == "/":
+            # Unix: use parent directory with temp suffix for atomic move
+            return self._static.parent / f"{self._static.name}.tmp"
+        # Windows: use drive root to minimize path length
+        return Path(f"{self.path.anchor}static")  # pragma: no cover
 
     @property
     def temporary_uploads(self) -> Path:
-        """Get temporary uploads directory path at drive root.
+        r"""Get temporary uploads directory path with platform-specific optimization.
+
+        This property returns different paths based on the platform to optimize for platform-specific
+        constraints and requirements:
+
+        On Windows:
+            Uses drive root (e.g., C:\uploads) to minimize path length and avoid hitting the 260-character
+            MAX_PATH limitation. During restore operations, both source (backup) and destination paths
+            contribute to total path length. By using the shortest possible temporary path at the drive
+            root, we minimize the risk of path length errors during file copy operations.
+
+        On Unix/Linux:
+            Uses parent directory with .tmp suffix (e.g., /path/to/uploads.tmp) for two reasons:
+            1. Avoids permission issues - cannot create directories at filesystem root (/)
+            2. Enables atomic move operations - staying on the same filesystem allows shutil.move()
+               to use rename(), which is atomic at the filesystem level
+
+        The two-step copy-to-temp-then-move pattern provides:
+        - Atomic directory replacement (no partial state visible)
+        - Safety (original remains intact if copy fails)
+        - Clean replacement (no file merging)
 
         Returns:
-            Path using drive anchor to minimize path length
+            Temporary path for uploads directory based on platform
         """
-        return Path(f"{self.path.anchor}uploads")
+        # On Windows, anchor is like 'C:\\', on Unix it's '/'
+        if self.path.anchor == "/":
+            # Unix: use parent directory with temp suffix for atomic move
+            return self._uploads.parent / f"{self._uploads.name}.tmp"
+        # Windows: use drive root to minimize path length
+        return Path(f"{self.path.anchor}uploads")  # pragma: no cover
 
     @property
     def static(self) -> Path:

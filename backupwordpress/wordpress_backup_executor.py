@@ -35,7 +35,23 @@ class WordpressBackupExecutor:
 
     @staticmethod
     def restore() -> None:
-        """Execute WordPress restore operation from latest backup."""
+        r"""Execute WordPress restore operation from latest backup.
+
+        This method uses a two-step copy-then-move approach for restoring static and uploads directories:
+        1. Copy backup files to a temporary location (temporary_static/temporary_uploads)
+        2. Move from temporary location to final destination
+
+        Rationale for this approach:
+        - Windows path length mitigation: Temporary paths use drive root (e.g., C:\static) to minimize
+          path length and avoid hitting the 260-character MAX_PATH limitation during copy operations.
+        - Atomic replacement: shutil.move() on the same filesystem is essentially a rename operation,
+          which is atomic. This ensures the final directory appears complete or not at all, with no
+          intermediate partial state visible to other processes.
+        - Safety: If the copy to temporary location fails, the original destination remains intact.
+          Only after successful copy does the move replace the old directory.
+        - Clean replacement: The pattern ensures old files are completely replaced rather than merged
+          with restored files.
+        """
         CONFIG.load(PATH_FILE_CONFIG)
 
         docker_compose_wordpress_project_directory = DockerComposeWordpressProjectDirectory(
