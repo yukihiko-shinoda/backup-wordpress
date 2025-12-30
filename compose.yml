@@ -1,0 +1,6 @@
+services:
+  backup-wordpress:
+    build: .
+    image: futureys/backup-wordpress:latest
+    volumes:
+      - ./:/workspace/
