@@ -1,8 +1,10 @@
+"""Configuration management for WordPress backup."""
+
 from dataclasses import dataclass
-from typing import Optional, Union
+
+from yamldataclassconfig.config import YamlDataClassConfig
 
 from backupwordpress.pathlib import Path
-from yamldataclassconfig.config import YamlDataClassConfig
 
 
 @dataclass
@@ -18,15 +20,11 @@ class Config(YamlDataClassConfig):
     The custom load() method below handles the string-to-Path conversion after
     the parent class has loaded and validated the YAML data.
     """
-    backup_root_directory: Optional[Union[str, Path]] = None
-    docker_compose_wordpress_project_directory: Optional[Union[str, Path]] = None
 
-    def load(
-        self,
-        path: Optional[Union[Path, str]] = None,
-        *,
-        path_is_absolute: bool = False
-    ) -> None:
+    backup_root_directory: str | Path | None = None
+    docker_compose_wordpress_project_directory: str | Path | None = None
+
+    def load(self, path: Path | str | None = None, *, path_is_absolute: bool = False) -> None:
         """Load config from YAML and convert string paths to Path objects.
 
         This override is necessary because yamldataclassconfig validates types
@@ -47,12 +45,26 @@ class Config(YamlDataClassConfig):
 
         # Convert string paths to Path objects after loading
         if isinstance(self.backup_root_directory, str):
-            object.__setattr__(
-                self, 'backup_root_directory', Path(self.backup_root_directory)
-            )
+            object.__setattr__(self, "backup_root_directory", Path(self.backup_root_directory))
         if isinstance(self.docker_compose_wordpress_project_directory, str):
             object.__setattr__(
                 self,
-                'docker_compose_wordpress_project_directory',
-                Path(self.docker_compose_wordpress_project_directory)
+                "docker_compose_wordpress_project_directory",
+                Path(self.docker_compose_wordpress_project_directory),
             )
+
+    @property
+    def path_backup_root_directory(self) -> Path:
+        # Reason: This block is not run in general use.
+        if not isinstance(self.backup_root_directory, Path):  # pragma: no cover
+            msg = "backup_root_directory must be set in config"
+            raise TypeError(msg)
+        return self.backup_root_directory
+
+    @property
+    def path_docker_compose_wordpress_project_directory(self) -> Path:
+        # Reason: This block is not run in general use.
+        if not isinstance(self.docker_compose_wordpress_project_directory, Path):  # pragma: no cover
+            msg = "docker_compose_wordpress_project_directory must be set in config"
+            raise TypeError(msg)
+        return self.docker_compose_wordpress_project_directory

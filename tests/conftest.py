@@ -1,4 +1,8 @@
+"""Pytest configuration and fixtures for backupwordpress tests."""
+
+from collections.abc import Generator
 from dataclasses import dataclass
+from datetime import UTC
 from datetime import datetime
 from pathlib import Path
 
@@ -12,7 +16,7 @@ from tests.testlibraries.instance_resource import InstanceResource
 
 YAML_CONFIG_FILE_PATH = YamlConfigFilePathBuilder(
     path_target_directory=InstanceResource.PATH_PROJECT_HOME_DIRECTORY,
-    path_test_directory=InstanceResource.PATH_TEST_RESOURCES
+    path_test_directory=InstanceResource.PATH_TEST_RESOURCES,
 )
 YamlConfigFileDeployer = DeployerFactory.create(YAML_CONFIG_FILE_PATH)
 
@@ -24,17 +28,19 @@ class PathForTest:
 
 
 @pytest.fixture
-def yaml_config_file(tmp_path):
+def yaml_config_file(tmp_path: Path) -> Generator[PathForTest]:
     """This fixture prepares YAML config file and loads it."""
     path_for_test = PathForTest(
-        tmp_path / 'backup',
-        tmp_path / 'docker_compose_word_press_project',
+        tmp_path / "backup",
+        tmp_path / "docker_compose_word_press_project",
     )
     YAML_CONFIG_FILE_PATH.resource.write_text(
-        yaml.dump({
-            'backup_root_directory': str(path_for_test.backup),
-            'docker_compose_wordpress_project_directory': str(path_for_test.docker_compose_wordpress_project)
-        })
+        yaml.safe_dump(
+            {
+                "backup_root_directory": str(path_for_test.backup),
+                "docker_compose_wordpress_project_directory": str(path_for_test.docker_compose_wordpress_project),
+            },
+        ),
     )
 
     YamlConfigFileDeployer.setup()
@@ -43,13 +49,15 @@ def yaml_config_file(tmp_path):
 
 
 @pytest.fixture
-def patch_datetime_now(monkeypatch, request):
-    date_time = getattr(request, 'param', datetime(9999, 12, 31, 23, 59, 59))
+def patch_datetime_now(monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest) -> datetime:
+    """Mock datetime.now() for predictable timestamps in tests."""
+    date_time = getattr(request, "param", datetime(9999, 12, 31, 23, 59, 59, tzinfo=UTC))
 
     class MockDateTime:
         @classmethod
-        def now(cls):
+        # Reason: Mock.
+        def now(cls, tz: object = None) -> datetime:  # noqa: ARG003  # pylint: disable=unused-argument
             return date_time
 
-    monkeypatch.setattr(wordpress_backup_executor, 'datetime', MockDateTime)
-    yield date_time
+    monkeypatch.setattr(wordpress_backup_executor, "datetime", MockDateTime)
+    return date_time

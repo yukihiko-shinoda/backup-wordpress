@@ -1,4 +1,17 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run invoke lint"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(uv run invoke clean:*)",
@@ -6,15 +19,6 @@
       "Bash(uv run invoke clean.python:*)",
       "Bash(uv run invoke clean.tests:*)",
       "Bash(uv run invoke dist:*)",
-      "Bash(uv run invoke path:*)",
-      "Bash(uv run invoke test.all:*)",
-      "Bash(uv run invoke test.coverage:*)",
-      "Bash(uv run invoke test:*)",
-      "Bash(uv run pytest:*)",
-      "Edit(tests/**)",
-      "Edit(backupwordpress/**)"
-    ],
-    "deny": [
       "Bash(uv run invoke lint.bandit:*)",
       "Bash(uv run invoke lint.cohesion:*)",
       "Bash(uv run invoke lint.deep:*)",
@@ -30,7 +34,16 @@
       "Bash(uv run invoke lint.ruff:*)",
       "Bash(uv run invoke lint.semgrep:*)",
       "Bash(uv run invoke lint.xenon:*)",
+      "Bash(uv run invoke path:*)",
       "Bash(uv run invoke style:*)",
+      "Bash(uv run invoke test.all:*)",
+      "Bash(uv run invoke test.coverage:*)",
+      "Bash(uv run invoke test:*)",
+      "Bash(uv run pytest:*)",
+      "Edit(tests/**)",
+      "Edit(backupwordpress/**)"
+    ],
+    "deny": [
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(rm:*)"

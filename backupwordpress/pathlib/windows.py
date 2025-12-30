@@ -1,11 +1,12 @@
 """Windows-specific path handling utilities.
 
-This module contains Windows-specific functionality that depends on
-pywin32. It should only be imported when running on Windows platforms.
+This module contains Windows-specific functionality that depends on pywin32. It should only be imported when running on
+Windows platforms.
 """
 
 from pathlib import Path
 
+# Reason: Linting runs only on Linux pylint: disable-next=import-error
 import win32api
 
 

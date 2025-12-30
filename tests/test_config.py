@@ -1,9 +1,15 @@
-from backupwordpress import Config, PATH_FILE_CONFIG
+"""Tests for Config."""
+
+from backupwordpress import PATH_FILE_CONFIG
+from backupwordpress import Config
+from tests.conftest import PathForTest
 
 
 class TestConfig:
+    """Test class for Config."""
+
     @staticmethod
-    def test_load(yaml_config_file):
+    def test_load(yaml_config_file: PathForTest) -> None:
         """Arguments should load yaml file."""
         config = Config()
         config.load(PATH_FILE_CONFIG)
