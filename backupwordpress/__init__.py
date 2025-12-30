@@ -1,6 +1,5 @@
-from pathlib import Path
-
 from backupwordpress.config import Config
+from backupwordpress.pathlib import Path
 
 CONFIG: Config = Config()
 

@@ -1,5 +1,4 @@
-import platform
-from pathlib import Path
+from backupwordpress.pathlib import Path, get_short_path_name
 
 
 class DockerComposeWordpressProjectDirectory:
@@ -25,23 +24,15 @@ class DockerComposeWordpressProjectDirectory:
     def static(self):
         if not self.static_exists:
             return self._static
-
-        # Only use Windows short path handling on Windows platform
-        if platform.system() == 'Windows':
-            from backupwordpress.windows import get_short_path_name
-            return get_short_path_name(self._static)
-        return self._static
+        # Convert to short path if needed (handles platform differences internally)
+        return get_short_path_name(self._static)
 
     @property
     def uploads(self):
         if not self.uploads_exists:
             return self._uploads
-
-        # Only use Windows short path handling on Windows platform
-        if platform.system() == 'Windows':
-            from backupwordpress.windows import get_short_path_name
-            return get_short_path_name(self._uploads)
-        return self._uploads
+        # Convert to short path if needed (handles platform differences internally)
+        return get_short_path_name(self._uploads)
 
     @property
     def static_exists(self):

@@ -1,4 +1,4 @@
-from pathlib import Path
+from backupwordpress.pathlib import Path
 
 
 class BackupDirectory:

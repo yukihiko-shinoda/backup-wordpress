@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Optional, Union
 
+from backupwordpress.pathlib import Path
 from yamldataclassconfig.config import YamlDataClassConfig
 
 

@@ -1,9 +1,12 @@
 """Windows-specific path handling utilities.
 
-This module contains Windows-specific functionality that depends on pywin32.
-It should only be imported when running on Windows platforms.
+This module contains Windows-specific functionality that depends on
+pywin32. It should only be imported when running on Windows platforms.
 """
+
 from pathlib import Path
+
+import win32api
 
 
 def get_short_path_name(path: Path) -> Path:
@@ -18,5 +21,4 @@ def get_short_path_name(path: Path) -> Path:
     Raises:
         ImportError: If win32api is not available (non-Windows platform)
     """
-    import win32api
     return Path(win32api.GetShortPathName(str(path)))
