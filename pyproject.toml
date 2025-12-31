@@ -1,6 +1,6 @@
 [dependency-groups]
 dev = [
-    "bandit; python_version >= '3.7'",
+    "bandit",
     "cohesion",
     # The coverage==3.5.3 is difficult to analyze its dependencies by dependencies management tool,
     # so we should avoid 3.5.3 or lower.
@@ -34,7 +34,7 @@ dev = [
     "Flake8-pyproject",
     # Latest hacking depends on legacy version of flake8, and legacy hacking doesn't narrow flake8 version.
     # When unpin hacking, it has possibility to install too legacy version of hacking.
-    "hacking>=5.0.0; python_version >= '3.8'",
+    "hacking>=5.0.0",
     "invokelint>=0.8.1",
     "mypy",
     # Currently, migration steps is difficult
@@ -42,7 +42,7 @@ dev = [
     "pylint",
     "pytest",
     "pytest-resource-path",
-    "pyvelocity; python_version >= '3.9'",
+    "pyvelocity",
     # Since the radon can't run when use pytest log format:
     # - Radon can't run when use pytest log format: `$()d` · Issue #251 · rubik/radon
     #   https://github.com/rubik/radon/issues/251
@@ -62,7 +62,7 @@ name = "backupwordpress"
 version = "0.1.0"
 description = "Backup script for WordPress on windows."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
     {name = "Yukihiko Shinoda", email = "yuk.hik.future@gmail.com"},
 ]
