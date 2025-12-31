@@ -1,5 +1,7 @@
 """Configuration management for WordPress backup."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 from yamldataclassconfig.config import YamlDataClassConfig

@@ -1,8 +1,8 @@
 """WordPress backup execution orchestrator."""
 
 import shutil
-from datetime import UTC
 from datetime import datetime
+from datetime import timezone
 
 from backupwordpress import CONFIG
 from backupwordpress import PATH_FILE_CONFIG
@@ -17,7 +17,7 @@ class WordpressBackupExecutor:
     def back_up() -> None:
         """Execute WordPress backup operation."""
         CONFIG.load(PATH_FILE_CONFIG)
-        now = datetime.now(tz=UTC)
+        now = datetime.now(tz=timezone.utc)
 
         path_root = CONFIG.path_backup_root_directory / now.strftime("%Y%m%d%H%M%S")
         path_root.mkdir()

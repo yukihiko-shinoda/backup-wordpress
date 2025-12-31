@@ -2,8 +2,8 @@
 
 from collections.abc import Generator
 from dataclasses import dataclass
-from datetime import UTC
 from datetime import datetime
+from datetime import timezone
 from pathlib import Path
 
 import pytest
@@ -51,7 +51,7 @@ def yaml_config_file(tmp_path: Path) -> Generator[PathForTest]:
 @pytest.fixture
 def patch_datetime_now(monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest) -> datetime:
     """Mock datetime.now() for predictable timestamps in tests."""
-    date_time = getattr(request, "param", datetime(9999, 12, 31, 23, 59, 59, tzinfo=UTC))
+    date_time = getattr(request, "param", datetime(9999, 12, 31, 23, 59, 59, tzinfo=timezone.utc))
 
     class MockDateTime:
         @classmethod

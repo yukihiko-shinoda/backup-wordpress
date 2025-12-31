@@ -62,7 +62,7 @@ name = "backupwordpress"
 version = "0.1.0"
 description = "Backup script for WordPress on windows."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.8"
 authors = [
     {name = "Yukihiko Shinoda", email = "yuk.hik.future@gmail.com"},
 ]
