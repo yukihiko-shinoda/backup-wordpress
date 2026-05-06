@@ -13,5 +13,6 @@ class TestConfig:
         """Arguments should load yaml file."""
         config = Config()
         config.load(PATH_FILE_CONFIG)
-        assert config.backup_root_directory == yaml_config_file.backup
-        assert config.docker_compose_wordpress_project_directory == yaml_config_file.docker_compose_wordpress_project
+        assert config.path_backup_root_directory == yaml_config_file.backup
+        expected = yaml_config_file.docker_compose_wordpress_project
+        assert config.path_docker_compose_wordpress_project_directory == expected
