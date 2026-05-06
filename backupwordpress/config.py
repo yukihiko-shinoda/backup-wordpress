@@ -14,17 +14,18 @@ class Config(YamlDataClassConfig):
     """This class implements configuration wrapping.
 
     Note on Path handling:
-    Fields are declared as Union[str, Path] rather than just Path because
+    Fields are declared as str | None rather than Path | None because
     yamldataclassconfig v2.x validates types BEFORE applying any decoder metadata.
-    If we declare fields as Path, the validation fails when loading from YAML
-    (which contains strings) before any conversion can happen.
+    The validator only handles single-non-None unions (Optional[X]); declaring
+    str | Path | None (two non-None types) causes it to fall back to the raw
+    UnionType, making isinstance checks fail.
 
     The custom load() method below handles the string-to-Path conversion after
     the parent class has loaded and validated the YAML data.
     """
 
-    backup_root_directory: str | Path | None = None
-    docker_compose_wordpress_project_directory: str | Path | None = None
+    backup_root_directory: str | None = None
+    docker_compose_wordpress_project_directory: str | None = None
 
     def load(self, path: Path | str | None = None, *, path_is_absolute: bool = False) -> None:
         """Load config from YAML and convert string paths to Path objects.
