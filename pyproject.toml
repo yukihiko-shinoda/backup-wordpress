@@ -52,7 +52,7 @@ dev = [
     # To prevent following error when use semgrep with protobuf 6.x:
     #   ImportError: cannot import name 'descriptor_database' from 'google.protobuf' (/workspace/.venv/lib/python3.13/site-packages/google/protobuf/__init__.py)
     # semgrep → opentelemetry-proto uses descriptor_database which was removed in protobuf 6.x
-    "protobuf<6",
+    "protobuf<8",
     "semgrep;python_version>='3.9' or platform_system=='Linux'",
     "types-invoke",
     "types-pywin32",
