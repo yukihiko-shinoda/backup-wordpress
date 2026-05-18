@@ -14,7 +14,7 @@ Use `uv` for package management (preferred over pipenv):
 
 ```bash
 # Install dependencies
-uv sync --python 3.13
+uv sync
 
 # Run commands via uv
 uv run <command>
