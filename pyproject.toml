@@ -47,7 +47,7 @@ dev = [
     "pyvelocity",
     "returns",
     "ruff",
-    "semgrep;python_version>='3.9' or platform_system=='Linux'",
+    "semgrep",
     "types-invoke",
     "types-pywin32",
     "types-pyyaml",
