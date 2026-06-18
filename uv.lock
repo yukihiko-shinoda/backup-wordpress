@@ -156,7 +156,7 @@ dev = [
     { name = "flake8-bugbear" },
     { name = "flake8-pyproject" },
     { name = "hacking", specifier = ">=5.0.0" },
-    { name = "invokelint", specifier = ">=0.17.1" },
+    { name = "invokelint", specifier = ">=0.19.0" },
     { name = "mypy" },
     { name = "pydantic", specifier = ">=2.13.3" },
     { name = "pylint" },
@@ -889,16 +889,17 @@ wheels = [
 
 [[package]]
 name = "invokelint"
-version = "0.18.0"
+version = "0.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "invoke" },
     { name = "packagediscovery" },
+    { name = "types-invoke" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/88/cf929e8126a418138e9f16bc15580013220f06e5b568e18f25f8cae25c5a/invokelint-0.18.0.tar.gz", hash = "sha256:723d06088f48522249b4d4674617aa8217438b8e13344bba31085ebd67f36746", size = 28820, upload-time = "2026-06-13T10:11:14.562Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/89/09c8bc6af47f8871d692197a3c901034e797fdf90c75235aa6d6a183eeb0/invokelint-0.19.0.tar.gz", hash = "sha256:7b8ccd76c2cc6b65403b511211eed731f6dd946e79da09589cad42b6be561ca1", size = 28916, upload-time = "2026-06-15T13:06:06.524Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/bc/a6c47fbd144d4a40cbf6305f1fa27c36163e26f0eabf87a701bf9ffd7c7e/invokelint-0.18.0-py3-none-any.whl", hash = "sha256:1a487c450e5c225511554a225506209c76b34b8135743a108331816e0c9e52c9", size = 17667, upload-time = "2026-06-13T10:11:13.546Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/8d/628b0155796d9db3478ba4ff1b78c6f11d10f022fa5419c6260da7007f82/invokelint-0.19.0-py3-none-any.whl", hash = "sha256:98d0e49ae8545f21fb5e20502891a822eafac51abceae3345e2f6330598eb393", size = 17127, upload-time = "2026-06-15T13:06:05.459Z" },
 ]
 
 [[package]]
